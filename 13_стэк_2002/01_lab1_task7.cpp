@@ -3,8 +3,9 @@
 //#include <locale.h>
 using namespace std;
 
-struct  {
-
+struct stackNode {
+    char data;
+    struct stackNode *nextPtr;
 };
 
 int maximum, k = 0;
@@ -18,7 +19,7 @@ void printStack(StackNodePtr currentPtr);
 bool isEmpty(StackNodePtr topPtr);  // мы проверяем конкретное значение, поэтому без указателя
 void menu();
 
-int main() {
+int task7_lab01_stack() {
     StackNodePtr stackPtr = NULL;  // отменяем создание стека
     int choice;
     char etalon, value;

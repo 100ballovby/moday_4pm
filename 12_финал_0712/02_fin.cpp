@@ -112,7 +112,7 @@ void delete_student(Student *&obj, int num) {
     }
 }
 
-int menu() {
+int menu_1() {
     int er;
     cout << "Введите:\n";
     cout << "1-для ввода массива" << endl;
