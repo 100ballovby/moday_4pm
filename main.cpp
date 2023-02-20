@@ -3,100 +3,111 @@
 //#include <locale.h>
 using namespace std;
 
-struct  {
+struct Node {  // узел
+    char data;
+    Node *nextPtr;
+};
 
+struct Queue {  // очередь
+    int size;
+    Node *first;
+    Node *last;
 };
 
 int maximum, k = 0;
 
-typedef struct stackNode StackNode;  // "указатель" на стек
-typedef StackNode *StackNodePtr;  // инициализация стека
+void createQ(Queue *Q);
+int getSize(Queue *Q);
+bool isEmpty(Queue *Q);
+void printQ(Queue *Q);
+void addNode(Queue *Q, int info);
+void menuQ();
 
-void push(StackNodePtr *topPtr, int info);
-int pop(StackNodePtr *topPtr);
-void printStack(StackNodePtr currentPtr);
-bool isEmpty(StackNodePtr topPtr);  // мы проверяем конкретное значение, поэтому без указателя
-void menu();
 
 int main() {
-    StackNodePtr stackPtr = NULL;  // отменяем создание стека
-    int choice;
     char etalon, value;
     cout << "Etalon element: "; cin >> etalon;
-    cout << "Size of stack: "; cin >> maximum;
+    cout << "Size of queue: "; cin >> maximum;
 
-    menu();
+    Queue Q;
+    Queue QPtr = Q;
+    createQ(&QPtr);
+    int choice;
+
+    menuQ();
     cin >> choice;
-    while (choice != 3) {
+    while (choice != 4) {
         switch(choice) {
             case 1:
                 cout << "Insert symbol: "; cin >> value;
                 if (value == etalon) {
                     cout << "Etalon inserted!\n\n";
-                    printStack(stackPtr);
+                    printQ(&Q);
                     break;
                 } else {
-                    push(&stackPtr, value);
-                    printStack(stackPtr);
+                    addNode(&QPtr, value);
                     break;
                 }
             case 2:
-                if (!isEmpty(stackPtr)) {
-                    cout << "Deleted " << pop(&stackPtr) << endl;
-                }
-                printStack(stackPtr);
+                printQ(&Q);
+                break;
+            case 3:
+                cout << getSize(&Q) << endl << endl;
                 break;
             default:
                 cout << "Incorrect choice, try again\n";
-                menu();
+                menuQ();
                 break;
         }
-        menu();
+        menuQ();
         cout << "Choice:"; cin >> choice;
     }
     return 0;
 }
 
-void menu() {
-    cout << "1 - Push\n2 - Pop\n3 - quit\n\n";
+void menuQ() {
+    cout << "1 - Add element\n2 - Print queue\n3 - size of queue\n4 - exit\n\n";
 }
 
-void push(StackNodePtr *topPtr, int info) {  // вставляем новый символ в стек
-    StackNodePtr newPtr;  // указатель на новый стек
-    newPtr = new StackNode;
-    if (k < maximum) {  // проверяем, чтобы в стеке еще было место
-        if (newPtr != NULL) {
-            newPtr->data = info;  /* Чтобы вставить в поле структуры значение, мы пишем название.поле = значение, но так как мы работаем с указателем на стек, мы используем аналог оператора "." - "->" */
-            newPtr->nextPtr = *topPtr;  // следующий элемент стека находится сверху
-            *topPtr = newPtr;
-            k++;
+void printQ(Queue *Q) {   // выводим все содержимое
+    if (!isEmpty(Q)) {
+        Node *temp;
+        temp = Q->first->nextPtr;
+        cout << "Queue\n";
+        for (int i = 0; i < getSize(Q); i++) {
+            cout << " | " << temp->data << " | ";
+            temp = temp->nextPtr;
         }
+        cout << " |\n\n";
+    } else {
+        cout << "Queue is empty\n\n";
+    }
+}
+
+void addNode(Queue *Q, int info) {  // вставляем новый символ в стек
+    if (k < maximum) {  // проверяем, чтобы в стеке еще было место
+        Q->last->nextPtr = new Node;
+        Q->last = Q->last->nextPtr;
+        Q->last->data = info;
+        Q->last->nextPtr = NULL;
+        Q->size++;
+        k++;
     } else {
         cout << info << " access denied\n";
     }
 }
 
-int pop(StackNodePtr *topPtr) {  // достаем элементы стека
-    StackNodePtr tempPtr; // указатель на временный узел
-    int popValue; // указатель на значение
-    tempPtr = *topPtr;
-    popValue = (*topPtr)->data;
-    *topPtr = (*topPtr)->nextPtr;
-    free(tempPtr);  // освобождаю динамически выделенную память
-    return popValue;
+void createQ(Queue *qPtr) {  // создает ПУСТУЮ очередь
+    qPtr->first = new Node;  // создаем новый узел
+    qPtr->first->nextPtr = NULL;  // ссылка на следующий - NULL
+    qPtr->last = qPtr->first;  // "границы" очереди
+    qPtr->size = 0;  // размер 0 (потому что пустая)
 }
 
-void printStack(StackNodePtr currentPtr) {   // выводим все содержимое
-    if (currentPtr != NULL) {
-        cout << "Stack\n";
-        while (currentPtr != NULL) {  // пока не дошли до конца стека
-            cout << " | " << currentPtr->data << " | ";
-            currentPtr = currentPtr->nextPtr;
-        }
-        cout << " |\n\n";
-    }
+bool isEmpty(Queue *Q) {
+    return Q->first == Q->last;
 }
 
-bool isEmpty(StackNodePtr topPtr) {
-    return topPtr == NULL;
+int getSize(Queue *Q) {
+    return Q->size;
 }
