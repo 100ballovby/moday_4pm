@@ -1,113 +1,66 @@
 #include <iostream>
-//#include <malloc.h>
-//#include <locale.h>
+#include <list>
+#include <iterator>
 using namespace std;
 
-struct Node {  // узел
-    char data;
-    Node *nextPtr;
-};
+void lists_basics() {
+    // чтобы создать список, надо указать list <тип_данных> <имя_идентификатора>
+    list <string> listik;
+    // чтобы инициализировать список, просто запишем его элементы в {}
+    list <int> numbers = {5, 2, 3, 8, 5, 2, 3};
+    /**
+     * pop_front - удалить элемент из начала списка
+     * pop_back - удалить элемент из конца списка
+     * push_front - добавить в начало
+     * push_back - добавить в конец
+     * front - обратиться к первому элементу
+     * back - обратиться к последнему элементу
+     * insert - вставить элемент в определенное место списка
+     * unique - удалить все повторяшки
+     * merge - добавление списка
+     * copy - вывести все элементы списка
+     *
+     * У списков есть два волшебных слова - begin() и end()
+     * **/
 
-struct Queue {  // очередь
-    int size;
-    Node *first;
-    Node *last;
-};
-
-int maximum, k = 0;
-
-void createQ(Queue *Q);
-int getSize(Queue *Q);
-bool isEmpty(Queue *Q);
-void printQ(Queue *Q);
-void addNode(Queue *Q, int info);
-void menuQ();
+    copy(numbers.begin(), numbers.end(), ostream_iterator<int>(cout, " "));
+}
 
 
 int main() {
-    char etalon, value;
-    cout << "Etalon element: "; cin >> etalon;
-    cout << "Size of queue: "; cin >> maximum;
+    list <int> mylist;
+    list <int> list_for_merge = {7, 8, 9, 10};
 
-    Queue Q;
-    Queue QPtr = Q;
-    createQ(&QPtr);
-    int choice;
+    // автоматическое наполнение списка
+    for (int i = 0; i < 7; i++) {
+        mylist.push_back(i);
+    }
+    // вывод списка
+    cout << "Новый список: " << endl;
+    copy(mylist.begin(), mylist.end(), ostream_iterator<int>(cout, " "));
+    cout << "\n\n";
 
-    menuQ();
-    cin >> choice;
-    while (choice != 4) {
-        switch(choice) {
-            case 1:
-                cout << "Insert symbol: "; cin >> value;
-                if (value == etalon) {
-                    cout << "Etalon inserted!\n\n";
-                    printQ(&Q);
-                    break;
-                } else {
-                    addNode(&QPtr, value);
-                    break;
-                }
-            case 2:
-                printQ(&Q);
-                break;
-            case 3:
-                cout << getSize(&Q) << endl << endl;
-                break;
-            default:
-                cout << "Incorrect choice, try again\n";
-                menuQ();
-                break;
-        }
-        menuQ();
-        cout << "Choice:"; cin >> choice;
+    // добавление элемента на последнее место
+    cout << "Вставил в конец списка 6: " << endl;
+    mylist.insert(mylist.end(), 6);  // в конец списка вставить число 6
+    copy(mylist.begin(), mylist.end(), ostream_iterator<int>(cout, " "));
+    cout << "\n\n";
+
+    // unique
+    mylist.unique();
+    list <int> :: iterator iter;  // эта штука будет бегать по списку и дергать элементы
+
+    // for (int iter = 0; iter < sizeof(mylist); iter++)
+    cout << "Удалил повторяшки: " << endl;
+    for (iter = mylist.begin(); iter != mylist.end(); iter++) {
+        cout << *iter << " ";
+    }
+
+    // объединение списков
+    mylist.merge(list_for_merge);  // добавляю в список mylist новый список list_for_merge
+    cout << "\n\nОбъединил два списка: " << endl;
+    for (iter = mylist.begin(); iter != mylist.end(); iter++) {
+        cout << *iter << " ";
     }
     return 0;
-}
-
-void menuQ() {
-    cout << "1 - Add element\n2 - Print queue\n3 - size of queue\n4 - exit\n\n";
-}
-
-void printQ(Queue *Q) {   // выводим все содержимое
-    if (!isEmpty(Q)) {
-        Node *temp;
-        temp = Q->first->nextPtr;
-        cout << "Queue\n";
-        for (int i = 0; i < getSize(Q); i++) {
-            cout << " | " << temp->data << " | ";
-            temp = temp->nextPtr;
-        }
-        cout << " |\n\n";
-    } else {
-        cout << "Queue is empty\n\n";
-    }
-}
-
-void addNode(Queue *Q, int info) {  // вставляем новый символ в стек
-    if (k < maximum) {  // проверяем, чтобы в стеке еще было место
-        Q->last->nextPtr = new Node;
-        Q->last = Q->last->nextPtr;
-        Q->last->data = info;
-        Q->last->nextPtr = NULL;
-        Q->size++;
-        k++;
-    } else {
-        cout << info << " access denied\n";
-    }
-}
-
-void createQ(Queue *qPtr) {  // создает ПУСТУЮ очередь
-    qPtr->first = new Node;  // создаем новый узел
-    qPtr->first->nextPtr = NULL;  // ссылка на следующий - NULL
-    qPtr->last = qPtr->first;  // "границы" очереди
-    qPtr->size = 0;  // размер 0 (потому что пустая)
-}
-
-bool isEmpty(Queue *Q) {
-    return Q->first == Q->last;
-}
-
-int getSize(Queue *Q) {
-    return Q->size;
 }
