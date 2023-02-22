@@ -62,5 +62,20 @@ int main() {
     for (iter = mylist.begin(); iter != mylist.end(); iter++) {
         cout << *iter << " ";
     }
+
+    // чтобы удалить все элементы со значением X
+    cout << "\n\nУдалим десятку: \n";
+    mylist.remove(10);
+    for (iter = mylist.begin(); iter != mylist.end(); iter++) {
+        cout << *iter << " ";
+    }
+
+    // удалим последовательно все элементы списка:
+    cout << "\n\nУдалим весь список: \n";
+    mylist.erase(mylist.begin(), mylist.end());  // снести элементы с самого начала до самого конца
+
+    for (iter = mylist.begin(); iter != mylist.end(); iter++) {
+        cout << *iter << " ";
+    }
     return 0;
 }
