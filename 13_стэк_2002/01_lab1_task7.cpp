@@ -15,8 +15,8 @@ typedef StackNode *StackNodePtr;  // инициализация стека
 
 void push(StackNodePtr *topPtr, int info);
 int pop(StackNodePtr *topPtr);
-void printStack(StackNodePtr currentPtr);
-bool isEmpty(StackNodePtr topPtr);  // мы проверяем конкретное значение, поэтому без указателя
+void printStack(StackNodePtr &currentPtr);
+bool isEmpty(StackNodePtr *topPtr);
 void menu();
 
 int task7_lab01_stack() {
@@ -42,7 +42,7 @@ int task7_lab01_stack() {
                     break;
                 }
             case 2:
-                if (!isEmpty(stackPtr)) {
+                if (!isEmpty(&stackPtr)) {
                     cout << "Deleted " << pop(&stackPtr) << endl;
                 }
                 printStack(stackPtr);
@@ -87,7 +87,7 @@ int pop(StackNodePtr *topPtr) {  // достаем элементы стека
     return popValue;
 }
 
-void printStack(StackNodePtr currentPtr) {   // выводим все содержимое
+void printStack(StackNodePtr &currentPtr) {   // выводим все содержимое
     if (currentPtr != NULL) {
         cout << "Stack\n";
         while (currentPtr != NULL) {  // пока не дошли до конца стека
@@ -98,6 +98,6 @@ void printStack(StackNodePtr currentPtr) {   // выводим все содер
     }
 }
 
-bool isEmpty(StackNodePtr topPtr) {
+bool isEmpty(StackNodePtr *topPtr) {
     return topPtr == NULL;
 }
