@@ -15,7 +15,7 @@ typedef StackNode *StackNodePtr;  // инициализация стека
 
 void push(StackNodePtr *topPtr, int info);
 int pop(StackNodePtr *topPtr);
-void printStack(StackNodePtr &currentPtr);
+void printStack(StackNodePtr currentPtr);
 bool isEmpty(StackNodePtr *topPtr);
 void menu();
 
@@ -87,7 +87,7 @@ int pop(StackNodePtr *topPtr) {  // достаем элементы стека
     return popValue;
 }
 
-void printStack(StackNodePtr &currentPtr) {   // выводим все содержимое
+void printStack(StackNodePtr currentPtr) {   // выводим все содержимое
     if (currentPtr != NULL) {
         cout << "Stack\n";
         while (currentPtr != NULL) {  // пока не дошли до конца стека
